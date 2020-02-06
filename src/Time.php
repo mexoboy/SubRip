@@ -2,6 +2,8 @@
 
 namespace Mexoboy\SubRip;
 
+use Mexoboy\SubRip\Exception\TimeException;
+
 final class Time
 {
     /**
@@ -44,7 +46,7 @@ final class Time
     public function setHours(int $hours): self
     {
         if ($hours > 99 || $hours < 0) {
-            throw new Exception('Invalid hours value');
+            throw new TimeException('Invalid hours value');
         }
 
         $this->hours = $hours;
@@ -60,7 +62,7 @@ final class Time
     public function setMinutes(int $minutes): self
     {
         if ($minutes > 59 || $minutes < 0) {
-            throw new Exception('Invalid minutes value');
+            throw new TimeException('Invalid minutes value');
         }
 
         $this->minutes = $minutes;
@@ -76,7 +78,7 @@ final class Time
     public function setSeconds(int $seconds): self
     {
         if ($seconds > 59 || $seconds < 0) {
-            throw new Exception('Invalid seconds value');
+            throw new TimeException('Invalid seconds value');
         }
 
         $this->seconds = $seconds;
@@ -92,7 +94,7 @@ final class Time
     public function setMilliseconds(int $milliseconds): self
     {
         if ($milliseconds > 999 || $milliseconds < 0) {
-            throw new Exception('Invalid milliseconds value');
+            throw new TimeException('Invalid milliseconds value');
         }
 
         $this->milliseconds = $milliseconds;
@@ -103,7 +105,7 @@ final class Time
     public static function create(string $time): self
     {
         if (!preg_match('/^(\d{2}):(\d{2}):(\d{2}),(\d{3})$/', $time, $matches)) {
-            throw new Exception('Invalid time format');
+            throw new TimeException('Invalid time format');
         }
 
         return new self((int) $matches[1], (int) $matches[2], (int) $matches[3], (int) $matches[4]);
