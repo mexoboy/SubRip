@@ -2,7 +2,8 @@
 
 namespace Mexoboy\SubRip;
 
-use Mexoboy\SubRip\Exception\TimeException;
+use Mexoboy\SubRip\Exception\InvalidArgumentException;
+use Mexoboy\SubRip\Exception\ParseException;
 use PHPUnit\Framework\TestCase;
 
 class TimeTest extends TestCase
@@ -12,7 +13,7 @@ class TimeTest extends TestCase
         $this->assertInstanceOf(Time::class, new Time());
     }
 
-    public function testCreateTimeFromString()
+    public function testCreateTimeFromStringIsValid()
     {
         $time = Time::create('12:34:56,789');
 
@@ -22,12 +23,17 @@ class TimeTest extends TestCase
         $this->assertSame(789, $time->getMilliseconds());
     }
 
-    public function testCreateTimeFromInvalidString()
+    public function testCreateTimeFromInvalidStringInStrictMode()
     {
-        $this->expectException(TimeException::class);
+        $this->expectException(ParseException::class);
         $this->expectExceptionMessage('Invalid time format');
 
         Time::create('1:12:39,1');
+    }
+
+    public function testCreateTimeFromInvalidStringInNonStrictMode()
+    {
+        $this->assertInstanceOf(Time::class, Time::create('1:12:39,1', false));
     }
 
     public function timeToStringProvider(): array
